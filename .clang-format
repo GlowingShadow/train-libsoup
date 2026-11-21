@@ -1,0 +1,12 @@
+BasedOnStyle: GNU
+IndentWidth: 2
+BreakBeforeBraces: Linux
+ColumnLimit: 100
+AlignConsecutiveDeclarations: Consecutive
+AlignAfterOpenBracket: Align
+SpaceBeforeParens: ControlStatements
+PointerAlignment: Right
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: Never
+BinPackParameters: false
+BinPackArguments: false
