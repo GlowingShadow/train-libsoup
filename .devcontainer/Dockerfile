@@ -17,4 +17,4 @@ RUN apt-get update && \
         clang-format \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /workspaces/devcontainer-libsoup
+WORKDIR /app
