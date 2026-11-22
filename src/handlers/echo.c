@@ -18,11 +18,11 @@ echo_handler(SoupServer        *server,
     return;
   }
 
-  g_autoptr(JsonBuilder) builder = json_builder_new();
+  g_autoptr(JsonBuilder) builder = json_builder_new(); // (builder empty, nothing generated yet)
 
-  json_builder_begin_object(builder);
-  json_builder_set_member_name(builder, "echo");
-  json_builder_begin_object(builder);
+  json_builder_begin_object(builder);                  // {
+  json_builder_set_member_name(builder, "echo");        // {"echo":
+  json_builder_begin_object(builder);                   // {"echo":{
 
   if (query) {
     GHashTableIter iter;
@@ -30,13 +30,16 @@ echo_handler(SoupServer        *server,
 
     g_hash_table_iter_init(&iter, query);
     while (g_hash_table_iter_next(&iter, &key, &value)) {
-      json_builder_set_member_name(builder, (const char *)key);
-      json_builder_add_string_value(builder, (const char *)value);
+      // example below assumes ?foo=bar&baz=qux, first iteration key="foo" value="bar"
+      json_builder_set_member_name(builder, (const char *)key);    // {"echo":{"foo":
+      json_builder_add_string_value(builder, (const char *)value); // {"echo":{"foo":"bar"
+      // second iteration key="baz" value="qux" gives:              {"echo":{"foo":"bar","baz":
+      //                                                             {"echo":{"foo":"bar","baz":"qux"
     }
   }
 
-  json_builder_end_object(builder);
-  json_builder_end_object(builder);
+  json_builder_end_object(builder); // {"echo":{"foo":"bar","baz":"qux"}
+  json_builder_end_object(builder); // {"echo":{"foo":"bar","baz":"qux"}}
 
   g_autoptr(JsonNode) root = json_builder_get_root(builder);
   g_autoptr(JsonGenerator) generator = json_generator_new();

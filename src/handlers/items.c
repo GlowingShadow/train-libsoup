@@ -9,14 +9,15 @@
 static char *
 item_json(const char *id, const char *value)
 {
-  g_autoptr(JsonBuilder) builder = json_builder_new();
+  g_autoptr(JsonBuilder) builder = json_builder_new(); // (builder empty, nothing generated yet)
 
-  json_builder_begin_object(builder);
-  json_builder_set_member_name(builder, "id");
-  json_builder_add_string_value(builder, id);
-  json_builder_set_member_name(builder, "value");
-  json_builder_add_string_value(builder, value);
-  json_builder_end_object(builder);
+  // example below assumes id="42", value="hello"
+  json_builder_begin_object(builder);                  // {
+  json_builder_set_member_name(builder, "id");         // {"id":
+  json_builder_add_string_value(builder, id);          // {"id":"42"
+  json_builder_set_member_name(builder, "value");      // {"id":"42","value":
+  json_builder_add_string_value(builder, value);       // {"id":"42","value":"hello"
+  json_builder_end_object(builder);                    // {"id":"42","value":"hello"}
 
   g_autoptr(JsonNode) root = json_builder_get_root(builder);
   g_autoptr(JsonGenerator) generator = json_generator_new();
